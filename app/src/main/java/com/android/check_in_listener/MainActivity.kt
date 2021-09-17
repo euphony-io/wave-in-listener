@@ -7,7 +7,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.android.check_in_listener.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity() , View.OnClickListener{
+class MainActivity : AppCompatActivity(){
 
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
@@ -23,8 +23,7 @@ class MainActivity : AppCompatActivity() , View.OnClickListener{
             binding.tvNum.text = it.toString()
         })
 
-        binding.btnListen.setOnClickListener(this)
-        binding.btnAllList.setOnClickListener(this)
+        binding.btnListen.setOnClickListener { model.listener() }
 
     }
 
@@ -32,13 +31,4 @@ class MainActivity : AppCompatActivity() , View.OnClickListener{
         _binding = null
         super.onDestroy()
     }
-
-    override fun onClick(v: View?) {
-        when(v){
-            binding.btnListen ->
-                model.listener()
-        }
-
-    }
-
 }
