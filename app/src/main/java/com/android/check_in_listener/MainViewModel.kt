@@ -5,4 +5,8 @@ import androidx.lifecycle.ViewModel
 
 class MainViewModel: ViewModel() {
     var listenData = MutableLiveData<ListenData>()
+
+    public fun listener(){
+
+    }
 }

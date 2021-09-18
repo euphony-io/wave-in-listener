@@ -2,11 +2,12 @@ package com.android.check_in_listener
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.android.check_in_listener.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(){
 
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
@@ -21,6 +22,9 @@ class MainActivity : AppCompatActivity() {
         model.listenData.observe(this, Observer {
             binding.tvNum.text = it.toString()
         })
+
+        binding.btnListen.setOnClickListener { model.listener() }
+
     }
 
     override fun onDestroy() {
