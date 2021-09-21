@@ -2,7 +2,7 @@ package com.android.check_in_listener
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
+import android.util.Log
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.android.check_in_listener.databinding.ActivityMainBinding
@@ -11,6 +11,7 @@ class MainActivity : AppCompatActivity(){
 
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
+    private var isListening = false
     private lateinit var model: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,8 +24,11 @@ class MainActivity : AppCompatActivity(){
             binding.tvNum.text = it.toString()
         })
 
-        binding.btnListen.setOnClickListener { model.listener() }
-
+        binding.btnListen.setOnClickListener {
+            if(!isListening) binding.btnListen.text = "수신중단"
+            else binding.btnListen.text = "수신버튼"
+            isListening = model.listener(isListening)
+        }
     }
 
     override fun onDestroy() {
