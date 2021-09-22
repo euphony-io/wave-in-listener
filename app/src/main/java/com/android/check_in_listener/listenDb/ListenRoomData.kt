@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
-class ListenData(
+class ListenRoomData(
     @PrimaryKey val personalNumber: String?,
     @ColumnInfo(name = "address") val address: String?
 )

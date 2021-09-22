@@ -4,12 +4,12 @@ import androidx.room.*
 
 @Dao
 interface ListenDao {
-    @Query("select * from listendata")
-    fun getAll() : List<ListenData>
+    @Query("select * from listenroomdata")
+    fun getAll() : List<ListenRoomData>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(data: ListenData)
+    fun insert(data: ListenRoomData)
 
     @Delete
-    fun delete(data: ListenData)
+    fun delete(data: ListenRoomData)
 }
