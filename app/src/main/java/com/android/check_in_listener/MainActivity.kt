@@ -35,6 +35,11 @@ class MainActivity : AppCompatActivity(){
             else binding.btnListen.text = "수신버튼"
             isListening = model.listener(isListening)
         }
+
+        // send btn
+        binding.btnAllList.setOnClickListener {
+            model.exportDataToCSV();
+        }
     }
 
     private fun saveListenData(listenData: ListenRoomData){

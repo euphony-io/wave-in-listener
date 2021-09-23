@@ -1,12 +1,21 @@
 package com.android.check_in_listener
 
+import android.os.Environment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.android.check_in_listener.listenDb.ListenDatabase
 import euphony.lib.receiver.AcousticSensor
 import euphony.lib.receiver.EuRxManager
+import java.io.File
+import java.io.FileWriter
+import java.io.IOException
+import java.io.PrintWriter
 
 class MainViewModel : ViewModel() {
     var listenData = MutableLiveData<ListenData>()
+
+    private var listenDatabase: ListenDatabase? = null
+    private val fileName:String = "VisitorList.csv"
 
     private val mRxManager: EuRxManager by lazy {
         EuRxManager()
@@ -43,4 +52,27 @@ class MainViewModel : ViewModel() {
             // 받아온 데이터 저장 필요
         }
     }
+
+    // export room to CSV
+    public fun exportDataToCSV() {
+        val path:String = Environment.getExternalStorageDirectory().absolutePath+"/Documents/VisitorList/"
+        val exportDir = File(path)
+        if (!exportDir.exists()) exportDir.mkdirs()
+
+        val csvFile = File(exportDir, fileName)
+        if (csvFile.exists()) csvFile.delete()
+        csvFile.createNewFile()
+        val fileWriter = PrintWriter(FileWriter(csvFile))
+
+        var visitorList = listenDatabase?.listenDao()?.getAll()
+        if (visitorList != null) {
+            for (item in visitorList) {
+                fileWriter.println(item.personalNumber + "/" + item.address)
+            }
+        }
+
+        fileWriter.close()
+
+    }
+
 }
