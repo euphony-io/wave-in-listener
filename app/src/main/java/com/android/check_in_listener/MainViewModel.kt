@@ -1,9 +1,13 @@
 package com.android.check_in_listener
 
+import android.app.Application
 import android.os.Environment
+import android.util.Log
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.android.check_in_listener.listenDb.ListenDatabase
+import com.android.check_in_listener.listenDb.ListenRoomData
 import euphony.lib.receiver.AcousticSensor
 import euphony.lib.receiver.EuRxManager
 import java.io.File
@@ -11,11 +15,12 @@ import java.io.FileWriter
 import java.io.IOException
 import java.io.PrintWriter
 
-class MainViewModel : ViewModel() {
+class MainViewModel(application: Application) : AndroidViewModel(application) {
+
     var listenData = MutableLiveData<ListenData>()
 
-    private var listenDatabase: ListenDatabase? = null
-    private val fileName:String = "VisitorList.csv"
+    private var listenDatabase: ListenDatabase? = ListenDatabase.getInstance(application)
+    private val fileName: String = "VisitorList.csv"
 
     private val mRxManager: EuRxManager by lazy {
         EuRxManager()
@@ -27,10 +32,10 @@ class MainViewModel : ViewModel() {
 
     // 마이크 권한 설정 필요
     public fun listener(isListening: Boolean): Boolean {
-        if(isListening){
+        if (isListening) {
 //            mRxManager.finish()
             return false
-        }else{
+        } else {
 //            mRxManager.listen()
             getListenData()
             return true
@@ -55,23 +60,25 @@ class MainViewModel : ViewModel() {
 
     // export room to CSV
     public fun exportDataToCSV() {
-        val path:String = Environment.getExternalStorageDirectory().absolutePath+"/Documents/VisitorList/"
+        val path: String =
+            "${Environment.getExternalStorageDirectory().absolutePath}/Documents/VisitorList/"
         val exportDir = File(path)
         if (!exportDir.exists()) exportDir.mkdirs()
 
-        val csvFile = File(exportDir, fileName)
-        if (csvFile.exists()) csvFile.delete()
-        csvFile.createNewFile()
-        val fileWriter = PrintWriter(FileWriter(csvFile))
+        Thread(Runnable {
+            val csvFile = File(exportDir, fileName)
+            if (csvFile.exists()) csvFile.delete()
+            csvFile.createNewFile()
+            val fileWriter = PrintWriter(FileWriter(csvFile))
 
-        var visitorList = listenDatabase?.listenDao()?.getAll()
-        if (visitorList != null) {
-            for (item in visitorList) {
-                fileWriter.println(item.personalNumber + "/" + item.address)
+            var visitorList = listenDatabase?.listenDao()?.getAll()
+            if (visitorList != null) {
+                for (item in visitorList) {
+                    fileWriter.println("${item.personalNumber},${item.address}")
+                }
             }
-        }
-
-        fileWriter.close()
+            fileWriter.close()
+        }).start()
 
     }
 
