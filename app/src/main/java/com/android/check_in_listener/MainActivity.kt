@@ -9,7 +9,6 @@ import android.os.Bundle
 import android.provider.Settings
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.android.check_in_listener.databinding.ActivityMainBinding
@@ -20,7 +19,6 @@ class MainActivity : AppCompatActivity(){
 
     companion object {
         const val PERMISSION_REQUEST_CODE = 17389
-        const val PERMISSION_REQUEST_EXTERNAL_STORAGE = 1;
     }
 
     private var _binding: ActivityMainBinding? = null
@@ -46,7 +44,7 @@ class MainActivity : AppCompatActivity(){
 
             if (checkSelfPermission(Manifest.permission.RECORD_AUDIO)
                 != PackageManager.PERMISSION_GRANTED){
-                showDialogToGetPermission()
+                showDialogToGetPermission(1)
             }else{
                 if(!isListening) binding.btnListen.text = "수신중단"
                 else binding.btnListen.text = "수신버튼"
@@ -55,7 +53,12 @@ class MainActivity : AppCompatActivity(){
         }
 
         binding.btnAllList.setOnClickListener {
-            model.exportDataToCSV();
+            if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED){
+                showDialogToGetPermission(2)
+            }else{
+                model.exportDataToCSV();
+            }
         }
 
         requestPermissions()
@@ -84,11 +87,16 @@ class MainActivity : AppCompatActivity(){
 
     }
 
-
-    private fun showDialogToGetPermission() {
+    private fun showDialogToGetPermission(option: Int) {
         val builder = AlertDialog.Builder(this)
-        builder.setTitle("Permission request")
-            .setMessage("you need to allow recorder permission for receive data.")
+        if(option==1) {
+            builder.setTitle("Permission request")
+                .setMessage("you need to allow microphone permission to receive data.")
+        }
+        else if(option==2) {
+            builder.setTitle("Permission request")
+                .setMessage("you need to allow storage permission to save files.")
+        }
 
         builder.setPositiveButton("OK") { dialogInterface, i ->
             val intent = Intent(
