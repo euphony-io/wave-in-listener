@@ -8,6 +8,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
 import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.android.check_in_listener.databinding.ActivityMainBinding
@@ -18,6 +20,7 @@ class MainActivity : AppCompatActivity(){
 
     companion object {
         const val PERMISSION_REQUEST_CODE = 17389
+        const val PERMISSION_REQUEST_EXTERNAL_STORAGE = 1;
     }
 
     private var _binding: ActivityMainBinding? = null
@@ -55,7 +58,7 @@ class MainActivity : AppCompatActivity(){
             model.exportDataToCSV();
         }
 
-        requestRecorderPermission()
+        requestPermissions()
 
     }
 
@@ -65,14 +68,22 @@ class MainActivity : AppCompatActivity(){
         }).start()
     }
 
-    private fun requestRecorderPermission() {
+    private fun requestPermissions() : Boolean {
         if(checkSelfPermission(Manifest.permission.RECORD_AUDIO)
-                == PackageManager.PERMISSION_GRANTED){
-        }else{
-            requestPermissions(arrayOf(Manifest.permission.RECORD_AUDIO),
-                PERMISSION_REQUEST_CODE)
+            == PackageManager.PERMISSION_GRANTED
+            && checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            == PackageManager.PERMISSION_GRANTED) {
+            return true
         }
+        val permissions: Array<String> = arrayOf(
+            Manifest.permission.RECORD_AUDIO,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE)
+
+        ActivityCompat.requestPermissions(this, permissions, 0)
+        return false
+
     }
+
 
     private fun showDialogToGetPermission() {
         val builder = AlertDialog.Builder(this)
