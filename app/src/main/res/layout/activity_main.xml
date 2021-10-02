@@ -11,6 +11,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/white"
         tools:context=".MainActivity">
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -43,14 +44,17 @@
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_all_list"
-            android:layout_width="0dp"
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="196dp"
-            android:text="전송버튼"
-            app:layout_constraintBottom_toBottomOf="@+id/btn_listen"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:layout_marginTop="8dp"
+            android:padding="8dp"
+            android:text="매장 방문 기록 조회"
+            android:textColor="#898989"
+            android:textSize="16dp"
+            app:layout_constraintEnd_toEndOf="@+id/btn_listen"
+            app:layout_constraintStart_toStartOf="@+id/btn_listen"
+            app:layout_constraintTop_toBottomOf="@+id/btn_listen" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
