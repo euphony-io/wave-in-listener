@@ -9,8 +9,11 @@ import android.provider.Settings
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.android.check_in_listener.databinding.ActivityVisitorListBinding
 import com.android.check_in_listener.listenDb.ListenDatabase
+import com.android.check_in_listener.visitorList.adapter.VisitorListRvAdapter
 
 class VisitorListActivity : AppCompatActivity() {
     private var _binding: ActivityVisitorListBinding? = null
@@ -40,6 +43,15 @@ class VisitorListActivity : AppCompatActivity() {
 
         binding.btnBack.setOnClickListener { onBackPressed() }
 
+        initRecyclerView()
+
+    }
+
+    private fun initRecyclerView(){
+        binding.rvVisitor.apply {
+            adapter = VisitorListRvAdapter()
+            layoutManager = LinearLayoutManager(this@VisitorListActivity, RecyclerView.VERTICAL, false)
+        }
     }
 
     private fun showDialogToGetFilePermission() {
