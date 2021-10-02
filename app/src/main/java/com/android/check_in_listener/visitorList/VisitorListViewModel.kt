@@ -3,9 +3,12 @@ package com.android.check_in_listener.visitorList
 import android.app.Application
 import android.os.Environment
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.android.check_in_listener.ListenData
 import com.android.check_in_listener.listenDb.ListenDatabase
+import com.android.check_in_listener.listenDb.ListenRepository
+import com.android.check_in_listener.listenDb.ListenRoomData
 import java.io.File
 import java.io.FileWriter
 import java.io.PrintWriter
@@ -16,6 +19,8 @@ class VisitorListViewModel(application: Application) : AndroidViewModel(applicat
 
     private var listenDatabase: ListenDatabase? = ListenDatabase.getInstance(application)
     private val fileName: String = "VisitorList.csv"
+
+    private val repository = ListenRepository(application)
 
     // export room to CSV
     fun exportDataToCSV() {
@@ -30,7 +35,7 @@ class VisitorListViewModel(application: Application) : AndroidViewModel(applicat
             csvFile.createNewFile()
             val fileWriter = PrintWriter(FileWriter(csvFile))
 
-            var visitorList = listenDatabase?.listenDao()?.getAll()
+            val visitorList = listenDatabase?.listenDao()?.getAllList()
             if (visitorList != null) {
                 for (item in visitorList) {
                     fileWriter.println("${item.personalNumber},${item.address}")
@@ -38,5 +43,9 @@ class VisitorListViewModel(application: Application) : AndroidViewModel(applicat
             }
             fileWriter.close()
         }).start()
+    }
+
+    fun getAllVisitorList(): LiveData<List<ListenRoomData>>?{
+        return repository.getAll()
     }
 }

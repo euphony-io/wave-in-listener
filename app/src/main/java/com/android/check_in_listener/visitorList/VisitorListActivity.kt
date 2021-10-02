@@ -6,8 +6,10 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,6 +23,8 @@ class VisitorListActivity : AppCompatActivity() {
     private lateinit var model: VisitorListViewModel
 
     private var listenDatabase: ListenDatabase? = null
+
+    private lateinit var visitorListRvAdaptaer: VisitorListRvAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,10 +52,18 @@ class VisitorListActivity : AppCompatActivity() {
     }
 
     private fun initRecyclerView(){
+        visitorListRvAdaptaer = VisitorListRvAdapter()
         binding.rvVisitor.apply {
-            adapter = VisitorListRvAdapter()
+            adapter = visitorListRvAdaptaer
             layoutManager = LinearLayoutManager(this@VisitorListActivity, RecyclerView.VERTICAL, false)
         }
+        viewAllVisitorList()
+    }
+
+    private fun viewAllVisitorList(){
+        model.getAllVisitorList()?.observe(this, Observer {
+            visitorListRvAdaptaer.submitList(it)
+        })
     }
 
     private fun showDialogToGetFilePermission() {

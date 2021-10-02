@@ -33,8 +33,8 @@ class VisitorListRvAdapter : RecyclerView.Adapter<VisitorListRvAdapter.VisitorLi
 
     override fun getItemCount(): Int = visitorList.size
 
-    fun submitList(visitorList: ArrayList<ListenRoomData>) {
-        this.visitorList = visitorList
+    fun submitList(visitorList: List<ListenRoomData>) {
+        this.visitorList.addAll(visitorList)
         notifyDataSetChanged()
     }
 }
