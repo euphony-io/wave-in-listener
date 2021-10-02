@@ -9,13 +9,12 @@ import android.os.Bundle
 import android.provider.Settings
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.android.check_in_listener.databinding.ActivityMainBinding
 import com.android.check_in_listener.listenDb.ListenDatabase
 import com.android.check_in_listener.listenDb.ListenRoomData
 
-class MainActivity : AppCompatActivity(){
+class MainActivity : AppCompatActivity() {
 
     companion object {
         const val PERMISSION_REQUEST_CODE = 17389
@@ -36,28 +35,19 @@ class MainActivity : AppCompatActivity(){
 
         listenDatabase = ListenDatabase.getInstance(this)
 
-        model.listenData.observe(this, Observer {
-            binding.tvNum.text = it.toString()
-        })
+//        model.listenData.observe(this, Observer {
+//            binding.tvNum.text = it.toString()
+//        })
 
         binding.btnListen.setOnClickListener {
-
             if (checkSelfPermission(Manifest.permission.RECORD_AUDIO)
-                != PackageManager.PERMISSION_GRANTED){
-                showDialogToGetPermission(1)
-            }else{
-                if(!isListening) binding.btnListen.text = "수신중단"
+                != PackageManager.PERMISSION_GRANTED
+            ) {
+                showDialogToGetMicroPhonePermission()
+            } else {
+                if (!isListening) binding.btnListen.text = "수신중단"
                 else binding.btnListen.text = "수신버튼"
                 isListening = model.listener(isListening)
-            }
-        }
-
-        binding.btnAllList.setOnClickListener {
-            if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED){
-                showDialogToGetPermission(2)
-            }else{
-                model.exportDataToCSV();
             }
         }
 
@@ -65,43 +55,41 @@ class MainActivity : AppCompatActivity(){
 
     }
 
-    private fun saveListenData(listenData: ListenRoomData){
+    private fun saveListenData(listenData: ListenRoomData) {
         Thread(Runnable {
             listenDatabase?.listenDao()?.insert(listenData)
         }).start()
     }
 
-    private fun requestPermissions() : Boolean {
-        if(checkSelfPermission(Manifest.permission.RECORD_AUDIO)
+    private fun requestPermissions(): Boolean {
+        if (checkSelfPermission(Manifest.permission.RECORD_AUDIO)
             == PackageManager.PERMISSION_GRANTED
             && checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            == PackageManager.PERMISSION_GRANTED) {
+            == PackageManager.PERMISSION_GRANTED
+        ) {
             return true
         }
         val permissions: Array<String> = arrayOf(
             Manifest.permission.RECORD_AUDIO,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+        )
 
         ActivityCompat.requestPermissions(this, permissions, 0)
         return false
 
     }
 
-    private fun showDialogToGetPermission(option: Int) {
+    private fun showDialogToGetMicroPhonePermission() {
         val builder = AlertDialog.Builder(this)
-        if(option==1) {
-            builder.setTitle("Permission request")
-                .setMessage("you need to allow microphone permission to receive data.")
-        }
-        else if(option==2) {
-            builder.setTitle("Permission request")
-                .setMessage("you need to allow storage permission to save files.")
-        }
+
+        builder.setTitle("Permission request")
+            .setMessage("you need to allow microphone permission to receive data.")
 
         builder.setPositiveButton("OK") { dialogInterface, i ->
             val intent = Intent(
                 Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                Uri.fromParts("package", packageName, null))
+                Uri.fromParts("package", packageName, null)
+            )
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
         }
