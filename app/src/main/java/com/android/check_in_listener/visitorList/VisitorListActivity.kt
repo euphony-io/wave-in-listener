@@ -38,6 +38,8 @@ class VisitorListActivity : AppCompatActivity() {
             }
         }
 
+        binding.btnBack.setOnClickListener { onBackPressed() }
+
     }
 
     private fun showDialogToGetFilePermission() {

@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.android.check_in_listener.databinding.ActivityMainBinding
 import com.android.check_in_listener.listenDb.ListenDatabase
 import com.android.check_in_listener.listenDb.ListenRoomData
+import com.android.check_in_listener.visitorList.VisitorListActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -39,6 +40,8 @@ class MainActivity : AppCompatActivity() {
 //            binding.tvNum.text = it.toString()
 //        })
 
+        requestPermissions()
+
         binding.btnListen.setOnClickListener {
             if (checkSelfPermission(Manifest.permission.RECORD_AUDIO)
                 != PackageManager.PERMISSION_GRANTED
@@ -51,7 +54,9 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        requestPermissions()
+        binding.btnVisitorList.setOnClickListener {
+            startActivity(Intent(this, VisitorListActivity::class.java))
+        }
 
     }
 

@@ -38,6 +38,5 @@ class VisitorListViewModel(application: Application) : AndroidViewModel(applicat
             }
             fileWriter.close()
         }).start()
-
     }
 }
