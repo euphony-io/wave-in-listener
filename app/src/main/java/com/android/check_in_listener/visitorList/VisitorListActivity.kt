@@ -8,12 +8,14 @@ import android.os.Bundle
 import android.provider.Settings
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.android.check_in_listener.databinding.ActivityVisitorListBinding
 import com.android.check_in_listener.listenDb.ListenDatabase
 
 class VisitorListActivity : AppCompatActivity() {
     private var _binding: ActivityVisitorListBinding? = null
     private val binding get() = _binding!!
+    private lateinit var model: VisitorListViewModel
 
     private var listenDatabase: ListenDatabase? = null
 
@@ -21,6 +23,7 @@ class VisitorListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         _binding = ActivityVisitorListBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        model = ViewModelProvider(this).get(VisitorListViewModel::class.java)
 
         listenDatabase = ListenDatabase.getInstance(this)
 
