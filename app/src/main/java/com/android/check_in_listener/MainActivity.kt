@@ -3,10 +3,12 @@ package com.android.check_in_listener
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
+import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModelProvider
@@ -14,6 +16,7 @@ import com.android.check_in_listener.databinding.ActivityMainBinding
 import com.android.check_in_listener.listenDb.ListenDatabase
 import com.android.check_in_listener.listenDb.ListenRoomData
 import com.android.check_in_listener.visitorList.VisitorListActivity
+import com.github.ybq.android.spinkit.style.FadingCircle
 
 class MainActivity : AppCompatActivity() {
 
@@ -27,6 +30,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var model: MainViewModel
 
     private var listenDatabase: ListenDatabase? = null
+
+    lateinit var loadingCircle: FadingCircle
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,14 +47,16 @@ class MainActivity : AppCompatActivity() {
 
         requestPermissions()
 
+        setLoadingCircle()
+
         binding.btnListen.setOnClickListener {
             if (checkSelfPermission(Manifest.permission.RECORD_AUDIO)
                 != PackageManager.PERMISSION_GRANTED
             ) {
                 showDialogToGetMicroPhonePermission()
             } else {
-                if (!isListening) binding.btnListen.text = "수신중단"
-                else binding.btnListen.text = "수신버튼"
+                if (!isListening) startListen()
+                else endListen()
                 isListening = model.listener(isListening)
             }
         }
@@ -60,6 +67,24 @@ class MainActivity : AppCompatActivity() {
 
         insertDummyData()
 
+    }
+
+    private fun setLoadingCircle(){
+        loadingCircle = FadingCircle()
+        loadingCircle.color = Color.parseColor("#57AEFF")
+    }
+
+    private fun startListen(){
+        binding.loadingMain.setIndeterminateDrawable(loadingCircle)
+        loadingCircle.setVisible(true, true)
+        loadingCircle.start()
+        binding.btnListen.text = getString(R.string.listen_end)
+    }
+
+    private fun endListen(){
+        binding.btnListen.text = getString(R.string.listen_start)
+        loadingCircle.stop()
+        loadingCircle.setVisible(false, false)
     }
 
     // 뷰 확인용 더미데이터입니다. 개발 마지막에 지워주세요!
