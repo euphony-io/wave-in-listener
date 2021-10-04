@@ -9,6 +9,8 @@ import com.android.check_in_listener.ListenData
 import com.android.check_in_listener.listenDb.ListenDatabase
 import com.android.check_in_listener.listenDb.ListenRepository
 import com.android.check_in_listener.listenDb.ListenRoomData
+import com.github.doyaaaaaken.kotlincsv.client.CsvWriter
+import com.github.doyaaaaaken.kotlincsv.dsl.csvWriter
 import java.io.File
 import java.io.FileWriter
 import java.io.PrintWriter
@@ -25,7 +27,7 @@ class VisitorListViewModel(application: Application) : AndroidViewModel(applicat
     // export room to CSV
     fun exportDataToCSV() {
         val path: String =
-            "${Environment.getExternalStorageDirectory().absolutePath}/Documents/VisitorList/"
+            "${Environment.getExternalStorageDirectory().absolutePath}/Documents/newFolder/"
         val exportDir = File(path)
         if (!exportDir.exists()) exportDir.mkdirs()
 
@@ -33,15 +35,24 @@ class VisitorListViewModel(application: Application) : AndroidViewModel(applicat
             val csvFile = File(exportDir, fileName)
             if (csvFile.exists()) csvFile.delete()
             csvFile.createNewFile()
-            val fileWriter = PrintWriter(FileWriter(csvFile))
 
-            val visitorList = listenDatabase?.listenDao()?.getAllList()
-            if (visitorList != null) {
-                for (item in visitorList) {
-                    fileWriter.println("${item.personalNumber},${item.address}")
+            val fileWriter = csvWriter {
+                charset = "UTF-8"
+                delimiter = ','
+                nullCode = "NULL"
+                lineTerminator = "\n"
+            }
+
+            fileWriter.open(csvFile, append = false) {
+                val visitorList = listenDatabase?.listenDao()?.getAllList()
+                if (visitorList != null) {
+                    writeRow(listOf("핸드폰번호", "방문 시각"))
+                    for (item in visitorList) {
+                        writeRow(listOf(item.personalNumber, item.time))
+                    }
                 }
             }
-            fileWriter.close()
+
         }).start()
     }
 
