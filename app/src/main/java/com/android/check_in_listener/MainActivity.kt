@@ -8,9 +8,12 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.android.check_in_listener.databinding.ActivityMainBinding
 import com.android.check_in_listener.listenDb.ListenDatabase
@@ -54,12 +57,20 @@ class MainActivity : AppCompatActivity() {
                 if (!isListening) startListen()
                 else endListen()
                 isListening = model.listener(isListening)
+                Log.d("listen", "MainActivity - onCreate() :  islisten: $isListening")
             }
         }
 
         binding.btnVisitorList.setOnClickListener {
             startActivity(Intent(this, VisitorListActivity::class.java))
         }
+
+        model.isSuccess.observe(this, Observer { isSuccess ->
+            if (isSuccess) {
+                isListening = model.listener(isListening)
+                endListen()
+            }
+        })
     }
 
     private fun setLoadingCircle(){
@@ -123,8 +134,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
+        Log.d("listen", "MainActivity - onCreate() :  islisten: $isListening")
         if (isListening) {
-            model.listener(isListening)
+            isListening = model.listener(isListening)
             endListen()
         }
     }
