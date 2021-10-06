@@ -62,6 +62,7 @@ class VisitorListActivity : AppCompatActivity() {
 
     private fun viewAllVisitorList(){
         model.getAllVisitorList()?.observe(this, Observer {
+            Log.d("listen", "VisitorListActivity - viewAllVisitorList() : $it")
             visitorListRvAdaptaer.submitList(it)
         })
     }

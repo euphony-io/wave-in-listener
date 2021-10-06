@@ -64,9 +64,6 @@ class MainActivity : AppCompatActivity() {
         binding.btnVisitorList.setOnClickListener {
             startActivity(Intent(this, VisitorListActivity::class.java))
         }
-
-        insertDummyData()
-
     }
 
     private fun setLoadingCircle(){
@@ -85,31 +82,6 @@ class MainActivity : AppCompatActivity() {
         binding.btnListen.text = getString(R.string.listen_start)
         loadingCircle.stop()
         loadingCircle.setVisible(false, false)
-    }
-
-    // 뷰 확인용 더미데이터입니다. 개발 마지막에 지워주세요!
-    private fun insertDummyData(){
-        saveListenData(ListenRoomData("가1234나1234", null, "2021-02-02 12:30:43"))
-        saveListenData(ListenRoomData("가1234나12345", null, "2021-02-03 11:32:43"))
-        saveListenData(ListenRoomData("가1234나12346", null, "2021-02-04 23:32:54"))
-        saveListenData(ListenRoomData("가1234나12347", null, "2021-02-05 34:32:65"))
-        saveListenData(ListenRoomData("가1234나12348", null, "2021-02-06 65:34:43"))
-        saveListenData(ListenRoomData("가1234나12349", null, "2021-02-07 64:23:32"))
-        saveListenData(ListenRoomData("가1234나123400", null, "2021-02-08 33:44:33"))
-        saveListenData(ListenRoomData("가1234나12348", null, "2021-02-09 76:87:55"))
-        saveListenData(ListenRoomData("가1234나123476", null, "2021-02-010 45:56:56"))
-        saveListenData(ListenRoomData("가1234나12347623", null, "2021-02-08 43:43:65"))
-        saveListenData(ListenRoomData("가1234나1234761", null, "2021-02-23 34:44:54"))
-        saveListenData(ListenRoomData("가1234나123476342", null, "2021-02-695 34:55:66"))
-        saveListenData(ListenRoomData("가1234나12347653", null, "2021-02-49 88:44:55"))
-        saveListenData(ListenRoomData("가1234나1234765352", null, "2021-02-23 33:43:22"))
-        saveListenData(ListenRoomData("가1234나12347643", null, "2021-02-99 23:43:44"))
-    }
-
-    private fun saveListenData(listenData: ListenRoomData) {
-        Thread(Runnable {
-            listenDatabase?.listenDao()?.insert(listenData)
-        }).start()
     }
 
     private fun requestPermissions(): Boolean {

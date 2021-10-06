@@ -17,8 +17,6 @@ import java.io.PrintWriter
 
 class VisitorListViewModel(application: Application) : AndroidViewModel(application) {
 
-    var listenData = MutableLiveData<ListenData>()
-
     private var listenDatabase: ListenDatabase? = ListenDatabase.getInstance(application)
     private val fileName: String = "VisitorList.csv"
 
@@ -50,13 +48,13 @@ class VisitorListViewModel(application: Application) : AndroidViewModel(applicat
                     for (item in visitorList) {
                         writeRow(listOf(item.personalNumber, item.time))
                     }
+
                 }
             }
-
         }).start()
     }
 
-    fun getAllVisitorList(): LiveData<List<ListenRoomData>>?{
+    fun getAllVisitorList(): LiveData<List<ListenRoomData>>? {
         return repository.getAll()
     }
 }

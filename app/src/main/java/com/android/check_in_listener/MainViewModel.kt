@@ -3,16 +3,16 @@ package com.android.check_in_listener
 
 import android.app.Application
 import android.icu.text.SimpleDateFormat
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.android.check_in_listener.listenDb.ListenDatabase
+import com.android.check_in_listener.listenDb.ListenRoomData
 import euphony.lib.receiver.AcousticSensor
 import euphony.lib.receiver.EuRxManager
 import java.util.*
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
-
-    var listenData = MutableLiveData<ListenData>()
 
     private var listenDatabase: ListenDatabase? = ListenDatabase.getInstance(application)
 
@@ -27,30 +27,27 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     // 마이크 권한 설정 필요
      fun listener(isListening: Boolean): Boolean {
         if (isListening) {
-//            mRxManager.finish()
+            mRxManager.finish()
             return false
         } else {
-//            mRxManager.listen()
+            mRxManager.listen()
             getListenData()
             return true
         }
     }
 
+    private fun saveListenData(listenData: ListenRoomData) {
+        Thread(Runnable {
+            listenDatabase?.listenDao()?.insert(listenData)
+        }).start()
+    }
+
     private fun getListenData() {
         mRxManager.acousticSensor = AcousticSensor { listenData ->
-            var address = ""
-            var number = ""
-            var time = ""
-            listenData.split("/").forEachIndexed() { idx, split ->
-                when (idx) {
-                    0 -> address = split
-                    1 -> number = split
-                }
-            }
-            time = getTime()
-            val listenData = ListenData(address, number, time)
-
-            // 받아온 데이터 저장 필요
+            Log.d("listen", "MainViewModel - getListenData() : $listenData")
+            val personalNumber = listenData
+            val time = getTime()
+            saveListenData(ListenRoomData(personalNumber, time))
         }
     }
 
