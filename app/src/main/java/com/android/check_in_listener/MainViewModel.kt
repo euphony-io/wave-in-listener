@@ -24,7 +24,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         android.Manifest.permission.RECORD_AUDIO
     )
 
-    // 마이크 권한 설정 필요
      fun listener(isListening: Boolean): Boolean {
         if (isListening) {
             mRxManager.finish()

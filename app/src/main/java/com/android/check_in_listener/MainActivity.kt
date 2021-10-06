@@ -41,10 +41,6 @@ class MainActivity : AppCompatActivity() {
 
         listenDatabase = ListenDatabase.getInstance(this)
 
-//        model.listenData.observe(this, Observer {
-//            binding.tvNum.text = it.toString()
-//        })
-
         requestPermissions()
 
         setLoadingCircle()
@@ -75,12 +71,14 @@ class MainActivity : AppCompatActivity() {
         binding.loadingMain.setIndeterminateDrawable(loadingCircle)
         loadingCircle.setVisible(true, true)
         loadingCircle.start()
+        binding.loadingMain.visibility = View.VISIBLE
         binding.btnListen.text = getString(R.string.listen_end)
     }
 
     private fun endListen(){
         binding.btnListen.text = getString(R.string.listen_start)
         loadingCircle.stop()
+        binding.loadingMain.visibility = View.GONE
         loadingCircle.setVisible(false, false)
     }
 
@@ -121,6 +119,14 @@ class MainActivity : AppCompatActivity() {
         }
         val dialog = builder.create()
         dialog.show()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (isListening) {
+            model.listener(isListening)
+            endListen()
+        }
     }
 
     override fun onDestroy() {
