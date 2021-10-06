@@ -27,7 +27,7 @@ class VisitorListViewModel(application: Application) : AndroidViewModel(applicat
     // export room to CSV
     fun exportDataToCSV() {
         val path: String =
-            "${Environment.getExternalStorageDirectory().absolutePath}/Documents/newFolder/"
+            "${Environment.getExternalStorageDirectory().absolutePath}/Documents/check/"
         val exportDir = File(path)
         if (!exportDir.exists()) exportDir.mkdirs()
 
