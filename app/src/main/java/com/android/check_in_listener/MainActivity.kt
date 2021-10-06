@@ -1,23 +1,22 @@
 package com.android.check_in_listener
 
 import android.Manifest
+import android.animation.Animator
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.android.check_in_listener.databinding.ActivityMainBinding
 import com.android.check_in_listener.listenDb.ListenDatabase
-import com.android.check_in_listener.listenDb.ListenRoomData
 import com.android.check_in_listener.visitorList.VisitorListActivity
 import com.github.ybq.android.spinkit.style.FadingCircle
 
@@ -69,6 +68,23 @@ class MainActivity : AppCompatActivity() {
             if (isSuccess) {
                 isListening = model.listener(isListening)
                 endListen()
+                successCheckAnim()
+            }
+        })
+    }
+
+    private fun successCheckAnim(){
+        binding.icCheck.visibility = View.VISIBLE
+        binding.icCheck.playAnimation()
+        binding.icCheck.addAnimatorListener(object : Animator.AnimatorListener{
+            override fun onAnimationStart(animation: Animator?) {
+            }
+            override fun onAnimationEnd(animation: Animator?) {
+                binding.icCheck.visibility = View.GONE
+            }
+            override fun onAnimationCancel(animation: Animator?) {
+            }
+            override fun onAnimationRepeat(animation: Animator?) {
             }
         })
     }
@@ -139,6 +155,7 @@ class MainActivity : AppCompatActivity() {
             isListening = model.listener(isListening)
             endListen()
         }
+        binding.icCheck.visibility = View.GONE
     }
 
     override fun onDestroy() {
