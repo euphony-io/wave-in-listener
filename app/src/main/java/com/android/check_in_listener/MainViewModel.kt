@@ -16,6 +16,7 @@ import java.util.*
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private var listenDatabase: ListenDatabase? = ListenDatabase.getInstance(application)
+    private var isListening = false
 
     private val _isSuccess = MutableLiveData<Boolean>(false)
     val isSuccess: LiveData<Boolean> get() = _isSuccess
@@ -28,14 +29,16 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         android.Manifest.permission.RECORD_AUDIO
     )
 
-    fun listener(isListening: Boolean): Boolean {
+    fun listener(): Boolean {
         _isSuccess.value = false
         if (isListening) {
             mRxManager.finish()
+            isListening = false
             return false
         } else {
             mRxManager.listen()
             getListenData()
+            isListening = true
             return true
         }
     }
@@ -54,6 +57,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             val personalNumber = listenData
             val time = getTime()
             saveListenData(ListenRoomData(personalNumber, time))
+            isListening = false
         }
     }
 
