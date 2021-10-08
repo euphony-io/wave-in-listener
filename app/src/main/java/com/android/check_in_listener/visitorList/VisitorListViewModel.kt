@@ -29,7 +29,7 @@ class VisitorListViewModel(application: Application) : AndroidViewModel(applicat
     private var listenDatabase: ListenDatabase? = ListenDatabase.getInstance(application)
     private val fileName: String = "VisitorList.csv"
     private val path: String =
-        "${Environment.getExternalStorageDirectory().absolutePath}/Documents/check/"
+        "${Environment.getExternalStorageDirectory().absolutePath}/Documents/VisitorsList/"
 
     private val exportDir = File(path)
     private val csvFile = File(exportDir, fileName)
