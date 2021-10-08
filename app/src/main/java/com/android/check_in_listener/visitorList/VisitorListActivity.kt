@@ -6,25 +6,24 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.FileProvider
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.check_in_listener.databinding.ActivityVisitorListBinding
 import com.android.check_in_listener.listenDb.ListenDatabase
+import com.android.check_in_listener.showCustomToast
 import com.android.check_in_listener.visitorList.adapter.VisitorListRvAdapter
 
 class VisitorListActivity : AppCompatActivity() {
     private var _binding: ActivityVisitorListBinding? = null
     private val binding get() = _binding!!
     private lateinit var model: VisitorListViewModel
-    private var isExportingSuccess = false
 
+    private var isExportingSuccess = false
     private var listenDatabase: ListenDatabase? = null
 
     private lateinit var visitorListRvAdaptaer: VisitorListRvAdapter
@@ -44,14 +43,19 @@ class VisitorListActivity : AppCompatActivity() {
             ) {
                 showDialogToGetFilePermission()
             } else {
-                isExportingSuccess = model.exportDataToCSV();
+                isExportingSuccess = model.exportDataToCSV()
             }
 
             if (isExportingSuccess) {
-                Toast.makeText(this, "방문자 기록 파일을 생성하였습니다\n내 파일/Documents/VisitorList 폴더를 확인해주세요", Toast.LENGTH_LONG).show()
+            //    Toast.makeText(this, "방문자 기록 파일을 생성하였습니다\n내 파일/Documents/VisitorList 폴더를 확인해주세요", Toast.LENGTH_LONG).show()
+                Toast(this).showCustomToast(
+                    "방문자 기록 파일을 생성하였습니다\n내 파일/Documents/VisitorsList 폴더를 확인해주세요!",
+                    this, Toast.LENGTH_LONG)
             }
             else {
-                Toast.makeText(this, "방문자 기록 파일 생성에 실패하였습니다.", Toast.LENGTH_SHORT).show()
+            //    Toast.makeText(this, "방문자 기록 파일 생성에 실패하였습니다.", Toast.LENGTH_SHORT).show()
+                Toast(this).showCustomToast("방문자 기록 파일 생성에 실패하였습니다.",
+                    this, Toast.LENGTH_SHORT)
             }
         }
 
