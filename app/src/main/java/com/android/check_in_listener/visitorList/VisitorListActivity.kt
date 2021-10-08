@@ -46,6 +46,7 @@ class VisitorListActivity : AppCompatActivity() {
             } else {
                 isExportingSuccess = model.exportDataToCSV();
             }
+
             if (isExportingSuccess) {
                 Toast.makeText(this, "방문자 기록 파일을 생성하였습니다\n내 파일/Documents/VisitorList 폴더를 확인해주세요", Toast.LENGTH_LONG).show()
             }
