@@ -5,7 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [ListenRoomData::class], version = 1, exportSchema = false)
+@Database(entities = [ListenRoomData::class], version = 2, exportSchema = false)
 abstract class ListenDatabase: RoomDatabase() {
     abstract fun listenDao(): ListenDao
 

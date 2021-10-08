@@ -4,20 +4,13 @@ import android.app.Application
 import android.os.Environment
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import com.android.check_in_listener.ListenData
 import com.android.check_in_listener.listenDb.ListenDatabase
 import com.android.check_in_listener.listenDb.ListenRepository
 import com.android.check_in_listener.listenDb.ListenRoomData
-import com.github.doyaaaaaken.kotlincsv.client.CsvWriter
 import com.github.doyaaaaaken.kotlincsv.dsl.csvWriter
 import java.io.File
-import java.io.FileWriter
-import java.io.PrintWriter
 
 class VisitorListViewModel(application: Application) : AndroidViewModel(application) {
-
-    var listenData = MutableLiveData<ListenData>()
 
     private var listenDatabase: ListenDatabase? = ListenDatabase.getInstance(application)
     private val fileName: String = "VisitorList.csv"
@@ -50,13 +43,13 @@ class VisitorListViewModel(application: Application) : AndroidViewModel(applicat
                     for (item in visitorList) {
                         writeRow(listOf(item.personalNumber, item.time))
                     }
+
                 }
             }
-
         }).start()
     }
 
-    fun getAllVisitorList(): LiveData<List<ListenRoomData>>?{
+    fun getAllVisitorList(): LiveData<List<ListenRoomData>>? {
         return repository.getAll()
     }
 }
