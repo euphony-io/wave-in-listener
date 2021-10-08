@@ -27,9 +27,9 @@ class VisitorListViewModel(application: Application) : AndroidViewModel(applicat
     var listenData = MutableLiveData<ListenData>()
 
     private var listenDatabase: ListenDatabase? = ListenDatabase.getInstance(application)
-    private val fileName: String = "VisitorList.csv"
+    private val fileName: String = "VisitorsList.csv"
     private val path: String =
-        "${Environment.getExternalStorageDirectory().absolutePath}/Documents/check/"
+        "${Environment.getExternalStorageDirectory().absolutePath}/Documents/VisitorsList/"
 
     private val exportDir = File(path)
     private val csvFile = File(exportDir, fileName)
@@ -75,9 +75,7 @@ class VisitorListViewModel(application: Application) : AndroidViewModel(applicat
     private fun writeFileFromRoom(callable: Callable<Boolean>): Boolean {
         try {
             return callable.call()
-            // return true
         } catch (e: Exception) {
-            Log.d("checking", "Fail : ${e.message}")
             return false
         }
     }
