@@ -7,8 +7,10 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.FileProvider
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,6 +23,7 @@ class VisitorListActivity : AppCompatActivity() {
     private var _binding: ActivityVisitorListBinding? = null
     private val binding get() = _binding!!
     private lateinit var model: VisitorListViewModel
+    private var isExportingSuccess = false
 
     private var listenDatabase: ListenDatabase? = null
 
@@ -41,7 +44,13 @@ class VisitorListActivity : AppCompatActivity() {
             ) {
                 showDialogToGetFilePermission()
             } else {
-                model.exportDataToCSV();
+                isExportingSuccess = model.exportDataToCSV();
+            }
+            if (isExportingSuccess) {
+                Toast.makeText(this, "방문자 기록 파일을 생성하였습니다\n내 파일/Documents/VisitorList 폴더를 확인해주세요", Toast.LENGTH_LONG).show()
+            }
+            else {
+                Toast.makeText(this, "방문자 기록 파일 생성에 실패하였습니다.", Toast.LENGTH_SHORT).show()
             }
         }
 

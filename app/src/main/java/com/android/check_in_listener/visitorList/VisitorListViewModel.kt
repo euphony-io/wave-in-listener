@@ -29,7 +29,7 @@ class VisitorListViewModel(application: Application) : AndroidViewModel(applicat
         val path: String =
             "${Environment.getExternalStorageDirectory().absolutePath}/Documents/check/"
         val exportDir = File(path)
-        var isExportingSuccess = true
+        var isExportingSuccess = false
         if (!exportDir.exists()) exportDir.mkdirs()
 
         Thread(Runnable {
