@@ -1,14 +1,11 @@
 # Check-in-listener
-'Check-in-listener' is a sound wave reception application using the '[euphony](https://github.com/euphony-io/euphony)' library.
+'Check-in-listener' is a sound wave reception application using the '[euphony](https://github.com/euphony-io/euphony)' library.<br>
 It can be used as a facility entry roster in accordance with the COVID-19 Prevention Guidelines.
 
 ## Prerequisite
 - Allow audio recorder and storage permission to run the app.
 
 ![결과01](https://user-images.githubusercontent.com/72801465/136551382-057131f7-6884-46e0-b1fe-272a5e4152c2.jpg) ![결과02](https://user-images.githubusercontent.com/72801465/136551396-d5c9d3ad-80c2-45aa-a5e8-2b47c1e0d0f0.jpg)
-
-
-
 
 ## How-to-use
 1. Click `방문자 확인 시작하기` button to start receiving sound waves.
@@ -30,7 +27,7 @@ It can be used as a facility entry roster in accordance with the COVID-19 Preven
 
 ## Euphony-library
 
-Official Facebook Page : https://www.facebook.com/euphonyproject
+Official Facebook Page : https://www.facebook.com/euphonyproject<br>
 Official Library Site : https://dev.jbear.co/euphony
 
 ## License
