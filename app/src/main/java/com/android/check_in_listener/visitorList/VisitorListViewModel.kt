@@ -25,10 +25,11 @@ class VisitorListViewModel(application: Application) : AndroidViewModel(applicat
     private val repository = ListenRepository(application)
 
     // export room to CSV
-    fun exportDataToCSV() {
+    fun exportDataToCSV() : Boolean {
         val path: String =
             "${Environment.getExternalStorageDirectory().absolutePath}/Documents/check/"
         val exportDir = File(path)
+        var isExportingSuccess = true
         if (!exportDir.exists()) exportDir.mkdirs()
 
         Thread(Runnable {
@@ -43,17 +44,23 @@ class VisitorListViewModel(application: Application) : AndroidViewModel(applicat
                 lineTerminator = "\n"
             }
 
-            fileWriter.open(csvFile, append = false) {
-                val visitorList = listenDatabase?.listenDao()?.getAllList()
-                if (visitorList != null) {
-                    writeRow(listOf("핸드폰번호", "방문 시각"))
-                    for (item in visitorList) {
-                        writeRow(listOf(item.personalNumber, item.time))
+            try {
+                fileWriter.open(csvFile, append = false) {
+                    val visitorList = listenDatabase?.listenDao()?.getAllList()
+                    if (visitorList != null) {
+                        writeRow(listOf("핸드폰번호", "방문 시각"))
+                        for (item in visitorList) {
+                            writeRow(listOf(item.personalNumber, item.time))
+                        }
                     }
                 }
+                isExportingSuccess = true;
+            } catch (e : Exception) {
+                isExportingSuccess = false;
             }
-
         }).start()
+
+        return isExportingSuccess
     }
 
     fun getAllVisitorList(): LiveData<List<ListenRoomData>>?{
