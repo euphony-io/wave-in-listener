@@ -46,14 +46,14 @@ class VisitorListActivity : AppCompatActivity() {
                 showDialogToGetFilePermission()
             } else {
                 isExportingSuccess = model.exportDataToCSV()
-            }
 
-            if (isExportingSuccess) {
-                Toast(this).showCustomToast(
-                    getString(R.string.export_file_success),this, Toast.LENGTH_LONG)
-            }
-            else {
-                Toast(this).showCustomToast(getString(R.string.export_file_fail),this, Toast.LENGTH_SHORT)
+                if (isExportingSuccess) {
+                    Toast(this).showCustomToast(
+                        getString(R.string.export_file_success),this, Toast.LENGTH_LONG)
+                }
+                else {
+                    Toast(this).showCustomToast(getString(R.string.export_file_fail),this, Toast.LENGTH_SHORT)
+                }
             }
         }
 
