@@ -2,6 +2,7 @@ package com.android.check_in_listener.visitorList
 
 import android.app.Application
 import android.os.Environment
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import com.android.check_in_listener.listenDb.ListenDatabase
@@ -65,6 +66,7 @@ class VisitorListViewModel(application: Application) : AndroidViewModel(applicat
         try {
             return callable.call()
         } catch (e: Exception) {
+            Log.d("export", "Fail : ${e.message}")
             return false
         }
     }

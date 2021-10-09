@@ -130,8 +130,8 @@ class MainActivity : AppCompatActivity() {
     private fun showDialogToGetMicroPhonePermission() {
         val builder = AlertDialog.Builder(this)
 
-        builder.setTitle("Permission request")
-            .setMessage("you need to allow microphone permission to receive data.")
+        builder.setTitle(getString(R.string.ask_permission_title))
+            .setMessage(getString(R.string.ask_permission_microphone))
 
         builder.setPositiveButton("OK") { dialogInterface, i ->
             val intent = Intent(

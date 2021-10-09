@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -13,6 +14,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.android.check_in_listener.R
 import com.android.check_in_listener.databinding.ActivityVisitorListBinding
 import com.android.check_in_listener.listenDb.ListenDatabase
 import com.android.check_in_listener.showCustomToast
@@ -48,12 +50,10 @@ class VisitorListActivity : AppCompatActivity() {
 
             if (isExportingSuccess) {
                 Toast(this).showCustomToast(
-                    "방문자 기록 파일을 생성하였습니다\n내 파일/Documents/VisitorsList 폴더를 확인해주세요!",
-                    this, Toast.LENGTH_LONG)
+                    getString(R.string.export_file_success),this, Toast.LENGTH_LONG)
             }
             else {
-                Toast(this).showCustomToast("방문자 기록 파일 생성에 실패하였습니다.",
-                    this, Toast.LENGTH_SHORT)
+                Toast(this).showCustomToast(getString(R.string.export_file_fail),this, Toast.LENGTH_SHORT)
             }
         }
 
@@ -82,8 +82,8 @@ class VisitorListActivity : AppCompatActivity() {
     private fun showDialogToGetFilePermission() {
         val builder = AlertDialog.Builder(this)
 
-        builder.setTitle("Permission request")
-            .setMessage("you need to allow storage permission to save files.")
+        builder.setTitle(getString(R.string.ask_permission_title))
+            .setMessage(getString(R.string.ask_permission_storage))
 
         builder.setPositiveButton("OK") { dialogInterface, i ->
             val intent = Intent(

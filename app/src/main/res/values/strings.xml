@@ -3,4 +3,9 @@
     <string name="listen_start">방문자 확인 시작하기</string>
     <string name="listen_end">방문자 확인 중지하기</string>
     <string name="explain_main">매장 방문자의 개인안심번호를 수신하려면\n방문자 확인 시작 버튼을 눌러주세요.</string>
+    <string name="ask_permission_title">Permission request</string>
+    <string name="ask_permission_microphone">you need to allow microphone permission to receive data.</string>
+    <string name="ask_permission_storage">you need to allow storage permission to save files.</string>
+    <string name="export_file_success">방문자 기록 파일을 생성하였습니다.\n내 파일/Documents/VisitorsList 폴더를 확인해주세요!</string>
+    <string name="export_file_fail">방문자 기록 파일 생성에 실패하였습니다.</string>
 </resources>
