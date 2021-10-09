@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/toast_text"
         android:textSize="15dp"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:textAlignment="center"
         android:background="@drawable/custom_toast_shape" />
 

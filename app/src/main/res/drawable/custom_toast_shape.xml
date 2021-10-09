@@ -3,18 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <stroke
-        android:width="2dp"
-        android:color="#57AEFF" />
     <solid
-        android:color="#BFFFFFFF" />
+        android:color="#D957AEFF" />
     <corners
-        android:radius="20dp" />
+        android:radius="5dp" />
     <padding
         android:left="10dp"
         android:right="10dp"
         android:top="10dp"
         android:bottom="10dp" />
-
 
 </shape>
