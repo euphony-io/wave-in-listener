@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity() {
             } else {
                 if (!isListening) startListen()
                 else endListen()
-                isListening = model.listener(isListening)
+                isListening = model.listener()
                 Log.d("listen", "MainActivity - onCreate() :  islisten: $isListening")
             }
         }
@@ -66,7 +66,7 @@ class MainActivity : AppCompatActivity() {
 
         model.isSuccess.observe(this, Observer { isSuccess ->
             if (isSuccess) {
-                isListening = model.listener(isListening)
+                isListening = false
                 endListen()
                 successCheckAnim()
             }
@@ -152,7 +152,7 @@ class MainActivity : AppCompatActivity() {
         super.onPause()
         Log.d("listen", "MainActivity - onCreate() :  islisten: $isListening")
         if (isListening) {
-            isListening = model.listener(isListening)
+            isListening = model.listener()
             endListen()
         }
         binding.icCheck.visibility = View.GONE
