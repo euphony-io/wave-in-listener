@@ -21,6 +21,7 @@ abstract class ListenDatabase: RoomDatabase() {
                             ListenDatabase::class.java, "listenRoomData.db"
                         )
                             .fallbackToDestructiveMigration()
+                            .allowMainThreadQueries()
                             .build()
                     }
                 }

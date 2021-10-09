@@ -130,10 +130,10 @@ class MainActivity : AppCompatActivity() {
     private fun showDialogToGetMicroPhonePermission() {
         val builder = AlertDialog.Builder(this)
 
-        builder.setTitle("Permission request")
-            .setMessage("you need to allow microphone permission to receive data.")
+        builder.setTitle(getString(R.string.ask_permission_title))
+            .setMessage(getString(R.string.ask_permission_microphone))
 
-        builder.setPositiveButton("OK") { dialogInterface, i ->
+        builder.setPositiveButton("권한 설정") { dialogInterface, i ->
             val intent = Intent(
                 Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
                 Uri.fromParts("package", packageName, null)
@@ -141,7 +141,7 @@ class MainActivity : AppCompatActivity() {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
         }
-        builder.setNegativeButton("Later") { dialogInterface, i ->
+        builder.setNegativeButton("나중에") { dialogInterface, i ->
 
         }
         val dialog = builder.create()
