@@ -4,8 +4,6 @@ import android.app.Application
 import android.os.Environment
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import com.android.check_in_listener.ListenData
 import com.android.check_in_listener.listenDb.ListenDatabase
 import com.android.check_in_listener.listenDb.ListenRepository
 import com.android.check_in_listener.listenDb.ListenRoomData
@@ -15,8 +13,6 @@ import java.lang.Exception
 import java.util.concurrent.Callable
 
 class VisitorListViewModel(application: Application) : AndroidViewModel(application) {
-
-    var listenData = MutableLiveData<ListenData>()
 
     private var listenDatabase: ListenDatabase? = ListenDatabase.getInstance(application)
     private val fileName: String = "VisitorsList.csv"
@@ -54,6 +50,7 @@ class VisitorListViewModel(application: Application) : AndroidViewModel(applicat
                             writeRow(listOf(item.personalNumber, item.time))
                         }
                     }
+
                 }
                 return true
             }

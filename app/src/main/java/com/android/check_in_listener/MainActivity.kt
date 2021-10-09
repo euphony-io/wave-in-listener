@@ -1,20 +1,22 @@
 package com.android.check_in_listener
 
 import android.Manifest
+import android.animation.Animator
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.android.check_in_listener.databinding.ActivityMainBinding
 import com.android.check_in_listener.listenDb.ListenDatabase
-import com.android.check_in_listener.listenDb.ListenRoomData
 import com.android.check_in_listener.visitorList.VisitorListActivity
 import com.github.ybq.android.spinkit.style.FadingCircle
 
@@ -41,10 +43,6 @@ class MainActivity : AppCompatActivity() {
 
         listenDatabase = ListenDatabase.getInstance(this)
 
-//        model.listenData.observe(this, Observer {
-//            binding.tvNum.text = it.toString()
-//        })
-
         requestPermissions()
 
         setLoadingCircle()
@@ -58,6 +56,7 @@ class MainActivity : AppCompatActivity() {
                 if (!isListening) startListen()
                 else endListen()
                 isListening = model.listener(isListening)
+                Log.d("listen", "MainActivity - onCreate() :  islisten: $isListening")
             }
         }
 
@@ -65,8 +64,29 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, VisitorListActivity::class.java))
         }
 
-        insertDummyData()
+        model.isSuccess.observe(this, Observer { isSuccess ->
+            if (isSuccess) {
+                isListening = model.listener(isListening)
+                endListen()
+                successCheckAnim()
+            }
+        })
+    }
 
+    private fun successCheckAnim(){
+        binding.icCheck.visibility = View.VISIBLE
+        binding.icCheck.playAnimation()
+        binding.icCheck.addAnimatorListener(object : Animator.AnimatorListener{
+            override fun onAnimationStart(animation: Animator?) {
+            }
+            override fun onAnimationEnd(animation: Animator?) {
+                binding.icCheck.visibility = View.GONE
+            }
+            override fun onAnimationCancel(animation: Animator?) {
+            }
+            override fun onAnimationRepeat(animation: Animator?) {
+            }
+        })
     }
 
     private fun setLoadingCircle(){
@@ -78,38 +98,15 @@ class MainActivity : AppCompatActivity() {
         binding.loadingMain.setIndeterminateDrawable(loadingCircle)
         loadingCircle.setVisible(true, true)
         loadingCircle.start()
+        binding.loadingMain.visibility = View.VISIBLE
         binding.btnListen.text = getString(R.string.listen_end)
     }
 
     private fun endListen(){
         binding.btnListen.text = getString(R.string.listen_start)
         loadingCircle.stop()
+        binding.loadingMain.visibility = View.GONE
         loadingCircle.setVisible(false, false)
-    }
-
-    // 뷰 확인용 더미데이터입니다. 개발 마지막에 지워주세요!
-    private fun insertDummyData(){
-        saveListenData(ListenRoomData("가1234나1234", null, "2021-02-02 12:30:43"))
-        saveListenData(ListenRoomData("가1234나12345", null, "2021-02-03 11:32:43"))
-        saveListenData(ListenRoomData("가1234나12346", null, "2021-02-04 23:32:54"))
-        saveListenData(ListenRoomData("가1234나12347", null, "2021-02-05 34:32:65"))
-        saveListenData(ListenRoomData("가1234나12348", null, "2021-02-06 65:34:43"))
-        saveListenData(ListenRoomData("가1234나12349", null, "2021-02-07 64:23:32"))
-        saveListenData(ListenRoomData("가1234나123400", null, "2021-02-08 33:44:33"))
-        saveListenData(ListenRoomData("가1234나12348", null, "2021-02-09 76:87:55"))
-        saveListenData(ListenRoomData("가1234나123476", null, "2021-02-010 45:56:56"))
-        saveListenData(ListenRoomData("가1234나12347623", null, "2021-02-08 43:43:65"))
-        saveListenData(ListenRoomData("가1234나1234761", null, "2021-02-23 34:44:54"))
-        saveListenData(ListenRoomData("가1234나123476342", null, "2021-02-695 34:55:66"))
-        saveListenData(ListenRoomData("가1234나12347653", null, "2021-02-49 88:44:55"))
-        saveListenData(ListenRoomData("가1234나1234765352", null, "2021-02-23 33:43:22"))
-        saveListenData(ListenRoomData("가1234나12347643", null, "2021-02-99 23:43:44"))
-    }
-
-    private fun saveListenData(listenData: ListenRoomData) {
-        Thread(Runnable {
-            listenDatabase?.listenDao()?.insert(listenData)
-        }).start()
     }
 
     private fun requestPermissions(): Boolean {
@@ -149,6 +146,16 @@ class MainActivity : AppCompatActivity() {
         }
         val dialog = builder.create()
         dialog.show()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d("listen", "MainActivity - onCreate() :  islisten: $isListening")
+        if (isListening) {
+            isListening = model.listener(isListening)
+            endListen()
+        }
+        binding.icCheck.visibility = View.GONE
     }
 
     override fun onDestroy() {
