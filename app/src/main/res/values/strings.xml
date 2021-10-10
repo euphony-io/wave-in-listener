@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">check-in-listener</string>
+    <string name="app_name">Wave-In (매장용)</string>
     <string name="listen_start">방문자 확인 시작하기</string>
     <string name="listen_end">방문자 확인 중지하기</string>
     <string name="explain_main">매장 방문자의 개인안심번호를 수신하려면\n방문자 확인 시작 버튼을 눌러주세요.</string>
