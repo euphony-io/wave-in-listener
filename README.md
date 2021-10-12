@@ -1,6 +1,8 @@
 # wave-in-listener
 <p align='center'><img width="15%" src="https://user-images.githubusercontent.com/66951780/136762511-56a8d5e5-4e4d-4229-a2cd-1cf649292fe6.png"/>
 
+[English version : README_EN.md](https://github.com/euphony-io/wave-in-listener/blob/master/README_EN.md)   
+
 wave-in-listener 는 매장에 방문한 고객의 개인안심번호를 음파통신을 이용해 수신할 수 있는 앱입니다.
 
 이 앱은 [wave-in-speaker](https://github.com/euphony-io/wave-in-speaker) 앱과 함께 사용됩니다.
